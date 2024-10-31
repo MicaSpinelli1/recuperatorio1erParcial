@@ -1,0 +1,40 @@
+import aldeaGala.*
+
+describe "test de la aldea" {
+
+  test "arterix toma una posion de dulce de leche y aceite de roca y su poder es 40" {
+    posionMagica.agregarIngredientes(dulceDeLeche)
+    posionMagica.agregarIngredientes(aceiteDeRoca)
+    asterix.tomarPosion(posionMagica)
+
+    assert.equals(40, asterix.poder())
+  }
+
+  test "el nuevo recibe una posicion de muerdagos tamaño=2 y su fuerza pasa ser 22" {
+    muerdago.tamano(2)
+    posionMagica.agregarIngredientes(muerdago)
+    nuevoGalo.tomarPosion(posionMagica)
+    assert.equals(22, nuevoGalo.fuerza())
+  }
+
+  test "obelix toma veneno y queda fuera de combate" {
+    posionMagica.agregarIngredientes(nuevoIngrediente)
+    obelix.tomarPosion(posionMagica)
+    assert.that(obelix.fueraDeCombate())
+  }
+
+  test "la aldea tiene 3 habitante y su fuerza total es 120" {
+    aceiteDeRoca.cantidad(20)
+    posionMagica.agregarIngredientes(muerdago)
+    asterix.tomarPosion(posionMagica)
+    obelix.tomarPosion(posionMagica)
+    aldeaGala.sumarHabitantes(asterix)
+    aldeaGala.sumarHabitantes(obelix)
+    aldeaGala.sumarHabitantes(nuevoGalo)
+    assert.equals(120, aldeaGala.poderDeLaAldea())
+
+
+
+    
+  }
+}

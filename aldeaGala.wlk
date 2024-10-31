@@ -1,3 +1,5 @@
+import testAldea.*
+
 object dulceDeLeche {
   method efecto(persona) {
     persona.aumentarFuerza(10)
@@ -30,16 +32,16 @@ object aceiteDeRoca {
 
 object asterix {
   var property fuerza = 0
-  var property resistencia = 0
+  var property resistencia = 2
 
   method poder() = fuerza * resistencia
  
-  method fueraDeCombate() {
-    resistencia = 0
-  }
+  method fueraDeCombate() = resistencia <= 0
+  
 
-  method curar() {
+  method curar(cantidad) {
     resistencia = resistencia * 2
+    fuerza = fuerza + cantidad
   }
 
   method aumentarFuerza(num) {
@@ -48,6 +50,10 @@ object asterix {
 
   method recibirVeneno() {
     self.fueraDeCombate()
+  }
+
+  method tomarPosion(posionMagica) {
+    posionMagica.aplicarEfectos(self)
   }
 }
 
@@ -59,8 +65,9 @@ object obelix {
 
   method fueraDeCombate() = fueraDeCombate
 
-  method curar() {
+  method curar(cantidad) {
     fueraDeCombate = false
+    fuerza = fuerza + cantidad
   }
 
   method aumentarFuerza(num) {
@@ -69,6 +76,10 @@ object obelix {
 
   method recibirVeneno() {
     self.fueraDeCombate()
+  }
+
+  method tomarPosion(posionMagica) {
+    posionMagica.aplicarEfectos(self)
   }
 }
 
@@ -91,25 +102,23 @@ object aldeaGala {
     habitantes.add(habitante)
   }
 
-  method poderDeLaAldea() {
-    habitantes.filter({habitante => !habitante.fueraDeCombate()}.map{h => h.poder()}.sum())
-  }
+  method poderDeLaAldea() = habitantes.filter({h => !h.fueraDeCombate()}).map({h => h.poder()}).sum()
 }
 
 object nuevoGalo {
   var property fuerza = 20
   var resistencia = 50
+  var poder = fuerza + resistencia * 2
 
 
-  method poder() = fuerza + resistencia * 2
+  method poder() = poder
 
-  method fueraDeCombate() {
-    self.poder() == 0
-  }
+  method fueraDeCombate()  = poder < 5
+    
 
-  method curar() {
+  method curar(cantidad) {
     resistencia = resistencia + 20
-    fuerza = fuerza + 10
+    fuerza = fuerza + 10 + cantidad
   }
 
   method aumentarFuerza(num) {
@@ -117,7 +126,12 @@ object nuevoGalo {
   }
 
   method recibirVeneno() {
-    self.fueraDeCombate()
+    fuerza = 0
+    resistencia = 0
+  }
+
+  method tomarPosion(posionMagica) {
+    posionMagica.aplicarEfectos(self)
   }
 }
 
